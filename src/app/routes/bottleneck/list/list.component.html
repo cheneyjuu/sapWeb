@@ -1,0 +1,10 @@
+<page-header>
+  调整瓶颈机台
+</page-header>
+<nz-card>
+  <nz-collapse nzAccordion>
+    <nz-collapse-panel *ngFor="let panel of data" [nzHeader]="panel.functionPositionName" [nzActive]="panel.active">
+
+    </nz-collapse-panel>
+  </nz-collapse>
+</nz-card>
