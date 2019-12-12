@@ -3,6 +3,7 @@ import { NzModalRef, NzMessageService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema } from '@delon/form';
 import { BottleneckService } from '../../service/bottleneck.service';
+import { differenceInHours } from 'date-fns';
 
 @Component({
   selector: 'app-bottleneck-adjust',
@@ -11,11 +12,12 @@ import { BottleneckService } from '../../service/bottleneck.service';
 })
 export class BottleneckAdjustComponent implements OnInit {
   record: any = {};
+  params = [];
 
   schema: SFSchema = {
     properties: {
-      deviceCode: { type: 'string', title: '设备编号' },
-      deviceName: { type: 'string', title: '设备名称' },
+      // deviceCode: { type: 'string', title: '设备编号' },
+      // deviceName: { type: 'string', title: '设备名称' },
       startDateTime: { type: 'string', title: '开始时间', format: 'date-time' },
       endDateTime: { type: 'string', title: '结束时间', format: 'date-time' },
     },
@@ -36,14 +38,29 @@ export class BottleneckAdjustComponent implements OnInit {
 
   constructor(private modal: NzModalRef, private msgSrv: NzMessageService, private botSrv: BottleneckService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log({ params: this.params });
+  }
 
   save(value: any) {
+    let deviceCode = '';
+    this.params.forEach((item: any) => {
+      deviceCode += item.deviceCode + ',';
+    });
+
+    const hours = differenceInHours(value.endDateTime, value.startDateTime);
+    console.log({ hours });
+    if (hours > 12) {
+      this.msgSrv.error('瓶颈机台设置时间最多不能超过12个小时');
+      return;
+    }
+
     value.userCode = localStorage.getItem('userCode');
     value.startDate = value.startDateTime.substring(0, 10);
     value.startTime = value.startDateTime.substring(11, 16);
     value.endDate = value.endDateTime.substring(0, 10);
     value.endTime = value.endDateTime.substring(11, 16);
+    value.deviceCode = deviceCode.substring(0, deviceCode.length - 1);
     console.log({ value });
 
     this.botSrv.adjustDevice(value).subscribe((res: any) => {

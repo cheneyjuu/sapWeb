@@ -14,16 +14,24 @@ import { BottleneckAdjustComponent } from '../adjust/adjust.component';
 })
 export class BottleneckListComponent implements OnInit {
   data = [];
-  record: any;
+  records = [];
 
   columns: STColumn[] = [
-    { title: '编号', index: 'id.value', type: 'radio' },
+    { title: '编号', index: 'id.value', type: 'checkbox' },
     { title: '设备编码', index: 'deviceCode' },
     { title: '设备名称', index: 'deviceName' },
     { title: '功能位置编码', index: 'functionPositionCode' },
     { title: '功能位置名称', index: 'functionPositionName' },
-    { title: '是否瓶颈设备', index: 'bottleneckDevice' },
-    { title: '剩余时间', index: 'restTime' },
+    {
+      title: '是否瓶颈机台',
+      index: 'bottleneckDevice',
+      type: 'badge',
+      badge: {
+        是: { text: '是', color: 'error' },
+        否: { text: '否', color: 'success' },
+      },
+    },
+    { title: { text: '剩余时间', optional: '（单位：分钟）' }, index: 'restTime' },
     { title: '维护工厂编码', index: 'factoryCode' },
     { title: '工厂名称', index: 'factoryName' },
     { title: '资产卡片号', index: 'careCode' },
@@ -55,11 +63,13 @@ export class BottleneckListComponent implements OnInit {
   }
 
   colChange(e: STChange) {
-    this.record = e.radio;
+    if (e.type === 'checkbox') {
+      this.records = e.checkbox;
+    }
   }
 
   adjustBottleneck(): void {
-    this.modal.createStatic(BottleneckAdjustComponent, { record: this.record }).subscribe((res: any) => {
+    this.modal.createStatic(BottleneckAdjustComponent, { params: this.records }).subscribe((res: any) => {
       if (res.data === true) {
         this.msgSrv.success('调整成功');
       } else {
