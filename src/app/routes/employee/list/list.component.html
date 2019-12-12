@@ -1,8 +1,8 @@
-<page-header [action]="phActionTpl">
-  <ng-template #phActionTpl>
-    <button (click)="add()" nz-button nzType="primary">新建</button>
-  </ng-template>
-</page-header>
 <nz-card>
-  <st #st [data]="data" [columns]="columns"></st>
+  <div style="margin-bottom: 1em;">
+    <button nz-button [nzSize]="'small'" (click)="resetPassword()" [nzType]="'default'">
+      <i nz-icon nzType="eye" nzTheme="outline"></i> 重置密码
+    </button>
+  </div>
+  <st #st [data]="data" [columns]="columns" (change)="colChange($event)"></st>
 </nz-card>

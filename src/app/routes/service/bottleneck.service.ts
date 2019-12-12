@@ -11,4 +11,8 @@ export class BottleneckService {
   loadUserDevices(userCode: string): Observable<any> {
     return this.http.get(this.url, { userCode });
   }
+
+  adjustDevice(body: any): Observable<any> {
+    return this.http.post(this.url, body);
+  }
 }

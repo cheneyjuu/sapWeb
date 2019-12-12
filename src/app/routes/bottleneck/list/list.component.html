@@ -1,10 +1,8 @@
-<page-header>
-  调整瓶颈机台
-</page-header>
 <nz-card>
-  <nz-collapse nzAccordion>
-    <nz-collapse-panel *ngFor="let panel of data" [nzHeader]="panel.functionPositionName" [nzActive]="panel.active">
-
-    </nz-collapse-panel>
-  </nz-collapse>
+  <div style="margin-bottom: 1em;">
+    <button nz-button [nzSize]="'small'" (click)="adjustBottleneck()" [nzType]="'default'">
+      <i nz-icon nzType="eye" nzTheme="outline"></i> 调整瓶颈机台
+    </button>
+  </div>
+  <st #st [data]="data" [columns]="columns" (change)="colChange($event)"></st>
 </nz-card>

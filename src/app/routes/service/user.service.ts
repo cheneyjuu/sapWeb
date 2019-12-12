@@ -11,4 +11,8 @@ export class UserService {
   findAllUsers(): Observable<any> {
     return this.http.get(this.url);
   }
+
+  resetPassword(userCode: string): Observable<any> {
+    return this.http.put(this.url + '/' + userCode + '/reset');
+  }
 }

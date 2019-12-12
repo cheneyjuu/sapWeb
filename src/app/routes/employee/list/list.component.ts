@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent } from '@delon/abc';
+import { STColumn, STComponent, STChange } from '@delon/abc';
 import { SFSchema } from '@delon/form';
 import { UserService } from '../../service/user.service';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-employee-list',
@@ -12,9 +13,11 @@ import { UserService } from '../../service/user.service';
 })
 export class EmployeeListComponent implements OnInit {
   data = [];
+  record: any;
 
   @ViewChild('st', { static: false }) st: STComponent;
   columns: STColumn[] = [
+    { title: '编号', index: 'id.value', type: 'radio' },
     { title: '人员编码', index: 'userCode' },
     { title: '姓名', index: 'userName' },
     { title: '岗位代码', index: 'jobCode' },
@@ -36,16 +39,9 @@ export class EmployeeListComponent implements OnInit {
         mode: 'text',
       },
     },
-    {
-      title: '',
-      buttons: [
-        // { text: '查看', click: (item: any) => `/form/${item.id}` },
-        // { text: '编辑', type: 'static', component: FormEditComponent, click: 'reload' },
-      ],
-    },
   ];
 
-  constructor(private userSrv: UserService, private cdr: ChangeDetectorRef) {}
+  constructor(private userSrv: UserService, private cdr: ChangeDetectorRef, private msgSrv: NzMessageService) {}
 
   ngOnInit() {
     this.loadUsers();
@@ -55,6 +51,24 @@ export class EmployeeListComponent implements OnInit {
     this.userSrv.findAllUsers().subscribe((res: any) => {
       this.data = res.data;
       this.cdr.detectChanges();
+    });
+  }
+
+  colChange(e: STChange) {
+    this.record = e.radio;
+  }
+
+  resetPassword(): void {
+    if (!this.record) {
+      this.msgSrv.error('请先选择用户');
+      return;
+    }
+    if (!this.record.userCode) {
+      this.msgSrv.error('无效的用户');
+      return;
+    }
+    this.userSrv.resetPassword(this.record.userCode).subscribe(() => {
+      this.msgSrv.success('密码重置成功');
     });
   }
 }
