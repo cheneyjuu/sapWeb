@@ -15,4 +15,8 @@ export class UserService {
   resetPassword(userCode: string): Observable<any> {
     return this.http.put(this.url + '/' + userCode + '/reset');
   }
+
+  releaseUser(userCode: string): Observable<any> {
+    return this.http.put(this.url + '/' + userCode + '/release');
+  }
 }

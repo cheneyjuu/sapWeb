@@ -47,6 +47,9 @@ export class EmployeeListComponent implements OnInit {
     this.loadUsers();
   }
 
+  /**
+   * 加载用户列表
+   */
   loadUsers(): void {
     this.userSrv.findAllUsers().subscribe((res: any) => {
       this.data = res.data;
@@ -54,10 +57,16 @@ export class EmployeeListComponent implements OnInit {
     });
   }
 
+  /**
+   * 复选框选中事件
+   */
   colChange(e: STChange) {
     this.record = e.radio;
   }
 
+  /**
+   * 重置用户密码
+   */
   resetPassword(): void {
     if (!this.record) {
       this.msgSrv.error('请先选择用户');
@@ -69,6 +78,27 @@ export class EmployeeListComponent implements OnInit {
     }
     this.userSrv.resetPassword(this.record.userCode).subscribe(() => {
       this.msgSrv.success('密码重置成功');
+    });
+  }
+
+  /**
+   * 释放用户
+   */
+  releaseUser(): void {
+    if (!this.record) {
+      this.msgSrv.error('请先选择用户');
+      return;
+    }
+    if (!this.record.userCode) {
+      this.msgSrv.error('无效的用户');
+      return;
+    }
+    this.userSrv.releaseUser(this.record.userCode).subscribe((res: any) => {
+      if (res.data === true) {
+        this.msgSrv.success('用户已释放');
+      } else {
+        this.msgSrv.error('释放用户出错');
+      }
     });
   }
 }

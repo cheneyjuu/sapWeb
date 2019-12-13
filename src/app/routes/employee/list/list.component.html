@@ -1,7 +1,10 @@
 <nz-card>
   <div style="margin-bottom: 1em;">
     <button nz-button [nzSize]="'small'" (click)="resetPassword()" [nzType]="'default'">
-      <i nz-icon nzType="eye" nzTheme="outline"></i> 重置密码
+      <i class="anticon anticon-redo"></i>重置密码
+    </button>
+    <button nz-button [nzSize]="'small'" (click)="releaseUser()" [nzType]="'default'">
+      <i class="anticon anticon-unlock"></i> 释放人员
     </button>
   </div>
   <st #st [data]="data" [columns]="columns" (change)="colChange($event)"></st>

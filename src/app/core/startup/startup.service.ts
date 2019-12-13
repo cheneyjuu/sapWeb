@@ -97,7 +97,7 @@ export class StartupService {
           },
           {
             text: '瓶颈机台',
-            icon: { type: 'icon', value: 'rocket' },
+            icon: { type: 'icon', value: 'anticon anticon-question-circle-o' },
             link: '/bottleneck/list',
           },
         ],
