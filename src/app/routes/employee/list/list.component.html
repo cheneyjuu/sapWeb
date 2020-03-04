@@ -1,4 +1,10 @@
 <nz-card>
+  <sf #sf mode="search" [schema]="searchSchema" [ui]="ui" [button]="null">
+    <button nz-button nzType="primary" nzSize="small" (click)="searchUser(sf.value)"><i nz-icon nzType="search"
+        nzTheme="outline"></i> 搜索</button>
+  </sf>
+</nz-card>
+<nz-card>
   <div style="margin-bottom: 1em;">
     <button nz-button [nzSize]="'small'" (click)="resetPassword()" [nzType]="'default'">
       <i class="anticon anticon-redo"></i>重置密码
@@ -6,6 +12,10 @@
     <button nz-button [nzSize]="'small'" (click)="releaseUser()" [nzType]="'default'">
       <i class="anticon anticon-unlock"></i> 释放人员
     </button>
+    <nz-divider nzType="vertical"></nz-divider>
+    <button nz-button [nzSize]="'small'" (click)="refreshData()" [nzType]="'primary'">
+      <i nz-icon nzType="reload" nzTheme="outline"></i> 刷新数据
+    </button>
   </div>
-  <st #st [data]="data" [columns]="columns" (change)="colChange($event)"></st>
+  <st #st [data]="data" [columns]="columns" (change)="colChange($event)" [loading]="loading"></st>
 </nz-card>

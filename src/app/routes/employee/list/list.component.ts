@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent, STChange } from '@delon/abc';
-import { SFSchema } from '@delon/form';
+import { SFSchema, SFUISchemaItem, SFComponent } from '@delon/form';
 import { UserService } from '../../service/user.service';
 import { NzMessageService } from 'ng-zorro-antd';
 
@@ -14,7 +14,26 @@ import { NzMessageService } from 'ng-zorro-antd';
 export class EmployeeListComponent implements OnInit {
   data = [];
   record: any;
+  loading = false;
 
+  searchSchema: SFSchema = {
+    properties: {
+      userName: {
+        type: 'string',
+        title: '姓名',
+      },
+      userCode: {
+        type: 'string',
+        title: '编码',
+      },
+    },
+  };
+  ui: SFUISchemaItem = {
+    $userName: { size: 'small' },
+    $userCode: { size: 'small' },
+  };
+
+  @ViewChild('sf', { static: false }) sf: SFComponent;
   @ViewChild('st', { static: false }) st: STComponent;
   columns: STColumn[] = [
     { title: '编号', index: 'id.value', type: 'radio' },
@@ -51,10 +70,21 @@ export class EmployeeListComponent implements OnInit {
    * 加载用户列表
    */
   loadUsers(): void {
+    this.loading = true;
     this.userSrv.findAllUsers().subscribe((res: any) => {
+      console.log({ users: res });
+
+      this.loading = false;
       this.data = res.data;
       this.cdr.detectChanges();
     });
+  }
+
+  /**
+   * 刷新数据
+   */
+  refreshData(): void {
+    this.loadUsers();
   }
 
   /**
@@ -99,6 +129,18 @@ export class EmployeeListComponent implements OnInit {
       } else {
         this.msgSrv.error('释放用户出错');
       }
+    });
+  }
+
+  searchUser(evt: any): void {
+    console.log({ evt });
+    this.loading = true;
+    this.userSrv.searchUser(evt).subscribe((res: any) => {
+      console.log({ res });
+
+      this.loading = false;
+      this.data = res.data;
+      this.cdr.detectChanges();
     });
   }
 }

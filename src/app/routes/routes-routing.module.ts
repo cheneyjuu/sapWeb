@@ -48,14 +48,14 @@ const routes: Routes = [
     path: 'passport',
     component: LayoutPassportComponent,
     children: [
-      { path: 'login', component: UserLoginComponent, data: { title: '登录', titleI18n: 'pro-login' } },
-      { path: 'register', component: UserRegisterComponent, data: { title: '注册', titleI18n: 'pro-register' } },
+      { path: 'login', component: UserLoginComponent, data: { title: '登录' } },
+      { path: 'register', component: UserRegisterComponent, data: { title: '注册' } },
       {
         path: 'register-result',
         component: UserRegisterResultComponent,
-        data: { title: '注册结果', titleI18n: 'pro-register-result' },
+        data: { title: '注册结果' },
       },
-      { path: 'lock', component: UserLockComponent, data: { title: '锁屏', titleI18n: 'lock' } },
+      { path: 'lock', component: UserLockComponent, data: { title: '锁屏' } },
     ],
   },
   // 单页不包裹Layout

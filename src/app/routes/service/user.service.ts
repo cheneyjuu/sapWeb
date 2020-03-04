@@ -19,4 +19,8 @@ export class UserService {
   releaseUser(userCode: string): Observable<any> {
     return this.http.put(this.url + '/' + userCode + '/release');
   }
+
+  searchUser(param: any): Observable<any> {
+    return this.http.get(this.url + '/search', param);
+  }
 }

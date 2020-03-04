@@ -15,6 +15,7 @@ import { BottleneckAdjustComponent } from '../adjust/adjust.component';
 export class BottleneckListComponent implements OnInit {
   data = [];
   records = [];
+  loading = false;
 
   columns: STColumn[] = [
     { title: '编号', index: 'id.value', type: 'checkbox' },
@@ -51,12 +52,14 @@ export class BottleneckListComponent implements OnInit {
   }
 
   loadDevices(): void {
+    this.loading = true;
     const userCode = localStorage.getItem('userCode');
     if (!userCode) {
       this.msgSrv.error('当前登录用户无效!');
       return;
     }
     this.botSrv.loadUserDevices(userCode).subscribe((res: any) => {
+      this.loading = false;
       this.data = res.data;
       this.cdr.detectChanges();
     });
